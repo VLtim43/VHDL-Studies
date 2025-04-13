@@ -1,16 +1,14 @@
-library ieee;
-use ieee.std_logic_1164.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
 
-entity hello is
-end entity;
+ENTITY hello IS
+END ENTITY;
 
-architecture behav of hello is
-begin
-  process
-  begin
-    report "Hello, World!";
-    wait;
-  end process;
-end architecture;
-
-
+ARCHITECTURE behav OF hello IS
+BEGIN
+  PROCESS
+  BEGIN
+    REPORT "Hello, World!";
+    WAIT;
+  END PROCESS;
+END ARCHITECTURE;
