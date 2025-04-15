@@ -1,10 +1,8 @@
-LIBRARY IEEE;
-USE IEEE.STD_LOGIC_1164.ALL;
 -- File: my_nand3.vhd
 ENTITY my_nand3 IS
     PORT (
-        A, B, C : IN STD_LOGIC;
-        F : OUT STD_LOGIC
+        A, B, C : IN BIT;
+        F : OUT BIT
     );
 END my_nand3;
 
