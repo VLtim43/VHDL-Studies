@@ -23,13 +23,13 @@ if [ ! -f "$FILE" ]; then
     exit 1
 fi
 
-ENTITY=$(basename "$FILE" .vhd)
+ENTITY=$(basename "$FILE")
+ENTITY="${ENTITY%.*}"
 
 cleanup() {
     echo "[INFO] Cleaning up generated files..."
-    rm -f "${ENTITY}" "${ENTITY}.o" *.o *.cf work-obj*.cf || true
+    rm -f "$ENTITY" *.o *.cf work-obj*.cf || true
 }
-
 trap cleanup EXIT
 
 echo "[INFO] Analyzing $FILE..."

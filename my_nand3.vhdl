@@ -10,5 +10,5 @@ END my_nand3;
 ARCHITECTURE exa_nand3 OF my_nand3
     IS
 BEGIN
-    F <= A NAND B;
+    F <= NOT (A AND B AND C);
 END exa_nand3;
