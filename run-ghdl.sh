@@ -18,19 +18,25 @@ fi
 
 FILE="$1"
 
-# Validate file
 if [ ! -f "$FILE" ]; then
     echo "[ERROR] File '$FILE' not found."
     exit 1
 fi
 
-# Extract entity name (filename without extension)
 ENTITY=$(basename "$FILE" .vhd)
 
-# Run GHDL flow
-docker run --rm -v "$PWD":/src -w /src "$IMAGE" ghdl -a "$FILE"
-docker run --rm -v "$PWD":/src -w /src "$IMAGE" ghdl -e "$ENTITY"
-docker run --rm -v "$PWD":/src -w /src "$IMAGE" ghdl -r "$ENTITY"
+cleanup() {
+    echo "[INFO] Cleaning up generated files..."
+    rm -f "${ENTITY}" "${ENTITY}.o" *.o *.cf work-obj*.cf || true
+}
 
-# Cleanup
-rm -f "$ENTITY" *.o *.cf work-obj*.cf
+trap cleanup EXIT
+
+echo "[INFO] Analyzing $FILE..."
+docker run --rm -v "$PWD":/src -w /src "$IMAGE" ghdl -a "$FILE"
+
+echo "[INFO] Elaborating $ENTITY..."
+docker run --rm -v "$PWD":/src -w /src "$IMAGE" ghdl -e "$ENTITY"
+
+echo "[INFO] Running simulation for $ENTITY..."
+docker run --rm -v "$PWD":/src -w /src "$IMAGE" ghdl -r "$ENTITY"
