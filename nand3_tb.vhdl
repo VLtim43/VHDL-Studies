@@ -1,12 +1,12 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 
-ENTITY my_nand3_tb IS
-END my_nand3_tb;
+ENTITY nand3_tb IS
+END nand3_tb;
 
-ARCHITECTURE tb OF my_nand3_tb IS
+ARCHITECTURE tb OF nand3_tb IS
 
-    COMPONENT my_nand3
+    COMPONENT nand3
         PORT (
             A, B, C : IN STD_LOGIC;
             F : OUT STD_LOGIC
@@ -30,7 +30,7 @@ ARCHITECTURE tb OF my_nand3_tb IS
 
 BEGIN
 
-    UUT : my_nand3
+    UUT : nand3
     PORT MAP(
         A => A_s,
         B => B_s,
@@ -47,42 +47,42 @@ BEGIN
         A_s <= '0';
         B_s <= '0';
         C_s <= '0';
-        WAIT FOR 10 ns;
+        WAIT FOR 5 ns;
         print_state;
         A_s <= '0';
         B_s <= '0';
         C_s <= '1';
-        WAIT FOR 10 ns;
+        WAIT FOR 5 ns;
         print_state;
         A_s <= '0';
         B_s <= '1';
         C_s <= '0';
-        WAIT FOR 10 ns;
+        WAIT FOR 5 ns;
         print_state;
         A_s <= '0';
         B_s <= '1';
         C_s <= '1';
-        WAIT FOR 10 ns;
+        WAIT FOR 5 ns;
         print_state;
         A_s <= '1';
         B_s <= '0';
         C_s <= '0';
-        WAIT FOR 10 ns;
+        WAIT FOR 5 ns;
         print_state;
         A_s <= '1';
         B_s <= '0';
         C_s <= '1';
-        WAIT FOR 10 ns;
+        WAIT FOR 5 ns;
         print_state;
         A_s <= '1';
         B_s <= '1';
         C_s <= '0';
-        WAIT FOR 10 ns;
+        WAIT FOR 5 ns;
         print_state;
         A_s <= '1';
         B_s <= '1';
         C_s <= '1';
-        WAIT FOR 10 ns;
+        WAIT FOR 5 ns;
         print_state;
 
         WAIT;
