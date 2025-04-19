@@ -1,4 +1,4 @@
-
+-- File: xor_gate_tb.vhd
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE std.textio.ALL;
