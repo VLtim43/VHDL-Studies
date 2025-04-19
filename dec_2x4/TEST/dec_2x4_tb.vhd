@@ -1,5 +1,5 @@
 
--- Truth Table (You can fill in outputs after simulation)
+-- File: dec_2x4_tb.vhd
 -- _____________________________
 -- |  E  |  S1 |  S0 |   Y      |
 -- |-----|-----|-----|----------|
