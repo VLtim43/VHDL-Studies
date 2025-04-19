@@ -9,7 +9,8 @@ ARCHITECTURE xor_gate_tb OF xor_gate_tb IS
         PORT (
             in1 : IN STD_LOGIC;
             in2 : IN STD_LOGIC;
-            o : OUT STD_LOGIC);
+            o : OUT STD_LOGIC
+        );
     END COMPONENT;
 
     SIGNAL i_1 : STD_LOGIC;
