@@ -1,4 +1,4 @@
--- File: dec2x4.vhd
+-- File: dec_2x4.vhd
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 
