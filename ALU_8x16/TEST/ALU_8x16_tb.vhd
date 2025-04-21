@@ -42,72 +42,33 @@ BEGIN
 
     stim_proc : PROCESS
     BEGIN
-        a_in_tb <= "00000000"; -- example A
-        b_in_tb <= "00000000"; -- example B
+        -- Test ADD operation (op_sel = "0010")
+        op_sel_tb <= "0010";
         c_in_tb <= '0';
 
-        -- 0) A - B
-        op_sel_tb <= "0000";
+        -- 1) 00000000 + 00000000 = 00000000 (zero flag = 1, overflow = 0)
+        a_in_tb <= "00000000";
+        b_in_tb <= "00000000";
         WAIT FOR 5 ns;
 
-        -- 1) A - B - Cin
-        op_sel_tb <= "0001";
+        -- 2) 00000001 + 00000001 = 00000010 (zero flag = 0, overflow = 0)
+        a_in_tb <= "00000001";
+        b_in_tb <= "00000001";
         WAIT FOR 5 ns;
 
-        -- 2) A + B
-        op_sel_tb <= "0010";
+        -- 3) 01111111 + 00000001 = 10000000 (overflow = 1)
+        a_in_tb <= "01111111";
+        b_in_tb <= "00000001";
         WAIT FOR 5 ns;
 
-        -- 3) A + B + Cin
-        op_sel_tb <= "0011";
+        -- 4) 11111111 + 00000001 = 00000000 (wrap around, zero = 1)
+        a_in_tb <= "11111111";
+        b_in_tb <= "00000001";
         WAIT FOR 5 ns;
 
-        -- 4) A and B
-        op_sel_tb <= "0100";
-        WAIT FOR 5 ns;
-
-        -- 5) A or B
-        op_sel_tb <= "0101";
-        WAIT FOR 5 ns;
-
-        -- 6) A xor B
-        op_sel_tb <= "0110";
-        WAIT FOR 5 ns;
-
-        -- 7) Bypass B
-        op_sel_tb <= "0111";
-        WAIT FOR 5 ns;
-
-        -- 8) Rotate Left A
-        op_sel_tb <= "1000";
-        WAIT FOR 5 ns;
-
-        -- 9) Rotate Right A
-        op_sel_tb <= "1001";
-        WAIT FOR 5 ns;
-
-        -- 10) Rotate Left A with Carry
-        op_sel_tb <= "1010";
-        WAIT FOR 5 ns;
-
-        -- 11) Rotate Right A with Carry
-        op_sel_tb <= "1011";
-        WAIT FOR 5 ns;
-
-        -- 12) Shift Logical Left A
-        op_sel_tb <= "1100";
-        WAIT FOR 5 ns;
-
-        -- 13) Shift Logical Right A
-        op_sel_tb <= "1101";
-        WAIT FOR 5 ns;
-
-        -- 14) Shift Arithmetic Right A
-        op_sel_tb <= "1110";
-        WAIT FOR 5 ns;
-
-        -- 15) NOT A
-        op_sel_tb <= "1111";
+        -- 5) 10000000 + 10000000 = 00000000 (overflow = 1)
+        a_in_tb <= "10000000";
+        b_in_tb <= "10000000";
         WAIT FOR 5 ns;
 
         WAIT;

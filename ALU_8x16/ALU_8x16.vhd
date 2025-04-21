@@ -1,25 +1,3 @@
--- File: ALU_8x16
--- _______________________________________
--- | op_sel |       Operation            |
--- |--------|----------------------------|
--- | 0000   |  A - B                     | 
--- | 0001   |  A - B - Cin               | 
--- | 0010   |  A + B                     | 
--- | 0011   |  A + B + Cin               | 
--- | 0100   |  A and B                   |
--- | 0101   |  A or B                    |
--- | 0110   |  A xor B                   |
--- | 0111   |  Bypass B                  | 
--- | 1000   |  Rotate Left A             |
--- | 1001   |  Rotate Right A            |
--- | 1010   |  Rotate Left A w/ Carry    |
--- | 1011   |  Rotate Right A w/ Carry   |
--- | 1100   |  Shift Logical Left A      |
--- | 1101   |  Shift Logical Right A     |
--- | 1110   |  Shift Arithmetic Right A  |
--- | 1111   |  NOT A                     |
--- ---------------------------------------
--- File: ALU_8x16.vhd
 -- File: ALU_8x16.vhd
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
@@ -46,37 +24,27 @@ ARCHITECTURE rtl OF ALU_8x16 IS
 
 BEGIN
 
-    -- Output assignment
+    -- Output assignments
     r_out <= result;
     z_out <= zero_flag;
     v_out <= overflow;
 
-    -- For now, all operations just output a_in
-    WITH op_sel SELECT
-        result <=
-        a_in WHEN "0000", -- A - B
-        a_in WHEN "0001", -- A - B - Cin
-        a_in WHEN "0010", -- A + B
-        a_in WHEN "0011", -- A + B + Cin
-        a_in WHEN "0100", -- A and B
-        a_in WHEN "0101", -- A or B
-        a_in WHEN "0110", -- A xor B
-        a_in WHEN "0111", -- Bypass B
-        a_in WHEN "1000", -- Rotate Left A
-        a_in WHEN "1001", -- Rotate Right A
-        a_in WHEN "1010", -- Rotate Left A w/ Carry
-        a_in WHEN "1011", -- Rotate Right A w/ Carry
-        a_in WHEN "1100", -- Shift Logical Left A
-        a_in WHEN "1101", -- Shift Logical Right A
-        a_in WHEN "1110", -- Shift Arithmetic Right A
-        a_in WHEN "1111", -- NOT A
-        (OTHERS => '0') WHEN OTHERS;
+    -- ADD 
+    -- r_out = a_in + b_in
+    -- c_out = 1 if there is a carry in the most significant bit
+    -- v_out = 1 if overflow 
+    result <= STD_LOGIC_VECTOR(unsigned(a_in) + unsigned(b_in)) WHEN op_sel = "0010"
+        ELSE
+        (OTHERS => '0');
 
     -- Zero flag: 1 if result is all zeros
     zero_flag <= '1' WHEN result = X"00" ELSE
         '0';
 
-    -- Overflow: not relevant for now
-    overflow <= '0';
+    -- Overflow flag for ADD 
+    overflow <= '1' WHEN op_sel = "0010" AND
+        (a_in(7) = b_in(7)) AND (result(7) /= a_in(7))
+        ELSE
+        '0';
 
 END ARCHITECTURE;
