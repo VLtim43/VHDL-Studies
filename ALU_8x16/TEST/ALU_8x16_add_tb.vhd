@@ -1,11 +1,11 @@
--- File: ALU_8x16_tb.vhd
+-- File: ALU_8x16_ADD_tb.vhd
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 
-ENTITY ALU_8x16_tb IS
+ENTITY ALU_8x16_ADD_tb IS
 END ENTITY;
 
-ARCHITECTURE behavior OF ALU_8x16_tb IS
+ARCHITECTURE behavior OF ALU_8x16_ADD_tb IS
 
     COMPONENT ALU_8x16
         PORT (
@@ -42,31 +42,31 @@ BEGIN
 
     stim_proc : PROCESS
     BEGIN
-        -- Test ADD operation (op_sel = "0010")
+        -- Test only ADD operation (op_sel = "0010")
         op_sel_tb <= "0010";
         c_in_tb <= '0';
 
-        -- 1) 00000000 + 00000000 = 00000000 (zero flag = 1, overflow = 0)
+        -- 1) 
         a_in_tb <= "00000000";
         b_in_tb <= "00000000";
         WAIT FOR 5 ns;
 
-        -- 2) 00000001 + 00000001 = 00000010 (zero flag = 0, overflow = 0)
+        -- 2) 
         a_in_tb <= "00000001";
         b_in_tb <= "00000001";
         WAIT FOR 5 ns;
 
-        -- 3) 01111111 + 00000001 = 10000000 (overflow = 1)
+        -- 3) 
         a_in_tb <= "01111111";
         b_in_tb <= "00000001";
         WAIT FOR 5 ns;
 
-        -- 4) 11111111 + 00000001 = 00000000 (wrap around, zero = 1)
+        -- 4) 
         a_in_tb <= "11111111";
         b_in_tb <= "00000001";
         WAIT FOR 5 ns;
 
-        -- 5) 10000000 + 10000000 = 00000000 (overflow = 1)
+        -- 5) 
         a_in_tb <= "10000000";
         b_in_tb <= "10000000";
         WAIT FOR 5 ns;

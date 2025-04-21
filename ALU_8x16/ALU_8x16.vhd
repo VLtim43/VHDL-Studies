@@ -7,7 +7,7 @@ ENTITY ALU_8x16 IS
     PORT (
         a_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0); -- Input A
         b_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0); -- Input B
-        c_in : IN STD_LOGIC; -- Carry In
+        c_in : IN STD_LOGIC; -- Carry In (not used yet)
         op_sel : IN STD_LOGIC_VECTOR(3 DOWNTO 0); -- Operation Select
 
         r_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0); -- Result
@@ -24,27 +24,29 @@ ARCHITECTURE rtl OF ALU_8x16 IS
 
 BEGIN
 
-    -- Output assignments
-    r_out <= result;
-    z_out <= zero_flag;
-    v_out <= overflow;
-
-    -- ADD 
-    -- r_out = a_in + b_in
-    -- c_out = 1 if there is a carry in the most significant bit
-    -- v_out = 1 if overflow 
-    result <= STD_LOGIC_VECTOR(unsigned(a_in) + unsigned(b_in)) WHEN op_sel = "0010"
-        ELSE
+    -- Operations
+    result <=
+        STD_LOGIC_VECTOR(unsigned(a_in) - unsigned(b_in)) WHEN op_sel = "0000" ELSE -- SUB
+        STD_LOGIC_VECTOR(unsigned(a_in) + unsigned(b_in)) WHEN op_sel = "0010" ELSE -- ADD
         (OTHERS => '0');
 
-    -- Zero flag: 1 if result is all zeros
+    -- Overflow Handler
+    overflow <=
+        -- ADD overflow
+        '1' WHEN op_sel = "0010" AND
+        ((a_in(7) = '0' AND b_in(7) = '0' AND result(7) = '1') OR
+        (a_in(7) = '1' AND b_in(7) = '1' AND result(7) = '0')) ELSE
+        -- SUB overflow
+        '1' WHEN op_sel = "0000" AND
+        ((a_in(7) = '0' AND b_in(7) = '1' AND result(7) = '1') OR
+        (a_in(7) = '1' AND b_in(7) = '0' AND result(7) = '0')) ELSE
+        '0';
+
+    -- Zero flag: 1 if result is zero
     zero_flag <= '1' WHEN result = X"00" ELSE
         '0';
 
-    -- Overflow flag for ADD 
-    overflow <= '1' WHEN op_sel = "0010" AND
-        (a_in(7) = b_in(7)) AND (result(7) /= a_in(7))
-        ELSE
-        '0';
-
+    r_out <= result;
+    z_out <= zero_flag;
+    v_out <= overflow;
 END ARCHITECTURE;
