@@ -27,7 +27,14 @@ BEGIN
     -- Operations
     result <=
         STD_LOGIC_VECTOR(unsigned(a_in) - unsigned(b_in)) WHEN op_sel = "0000" ELSE -- SUB
+        -- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0001 -- SUBC
         STD_LOGIC_VECTOR(unsigned(a_in) + unsigned(b_in)) WHEN op_sel = "0010" ELSE -- ADD
+        -- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0011 -- ADDC
+        (a_in AND b_in) WHEN op_sel = "0100" ELSE -- AND
+        (a_in OR b_in) WHEN op_sel = "0101" ELSE -- OR
+        (a_in XOR b_in) WHEN op_sel = "0110" ELSE -- XOR
+        (NOT a_in) WHEN op_sel = "1111" ELSE -- NOR
+
         (OTHERS => '0');
 
     -- Overflow Handler
