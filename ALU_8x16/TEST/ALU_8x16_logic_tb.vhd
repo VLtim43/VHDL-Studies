@@ -99,6 +99,7 @@ BEGIN
         -- NOT operation (b_in ignored)
         op_sel_tb <= "1111";
         a_in_tb <= "00000000";
+        b_in_tb <= "XXXXXXXX"; -- ignored
         WAIT FOR 5 ns;
         a_in_tb <= "11111111";
         WAIT FOR 5 ns;
@@ -107,6 +108,20 @@ BEGIN
         a_in_tb <= "01010101";
         WAIT FOR 5 ns;
         a_in_tb <= "00001111";
+        WAIT FOR 5 ns;
+
+        -- PASS_B 
+        op_sel_tb <= "0111";
+        a_in_tb <= "XXXXXXXX"; -- ignored
+        b_in_tb <= "00000000";
+        WAIT FOR 5 ns;
+        b_in_tb <= "11111111";
+        WAIT FOR 5 ns;
+        b_in_tb <= "10101010";
+        WAIT FOR 5 ns;
+        b_in_tb <= "01010101";
+        WAIT FOR 5 ns;
+        b_in_tb <= "00001111";
         WAIT FOR 5 ns;
 
         WAIT;

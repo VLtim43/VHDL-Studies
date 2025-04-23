@@ -33,6 +33,7 @@ BEGIN
         (a_in AND b_in) WHEN op_sel = "0100" ELSE -- AND
         (a_in OR b_in) WHEN op_sel = "0101" ELSE -- OR
         (a_in XOR b_in) WHEN op_sel = "0110" ELSE -- XOR
+        (b_in) WHEN op_sel = "0111" ELSE -- PASS_B
         (NOT a_in) WHEN op_sel = "1111" ELSE -- NOR
 
         (OTHERS => '0');
