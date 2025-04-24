@@ -1,0 +1,11 @@
+# Ignore everything
+*
+
+# Allow directories so Git can descend into them
+!*/
+
+# Allow VHDL files in any folder
+!**/*.vhd
+!**/*.vhdl
+!**/*.md
+!**/*.gitignore
