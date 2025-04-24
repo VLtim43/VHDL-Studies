@@ -1,35 +1,36 @@
--- File: ALU_8x16_logic_tb.vhd
+-- File: ALU_2x16_logic_tb.vhd
+-- This tests the AND OR XOR NOT and PASS_B operations
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 
-ENTITY ALU_8x16_logic_tb IS
+ENTITY ALU_2x16_logic_tb IS
 END ENTITY;
 
-ARCHITECTURE behavior OF ALU_8x16_logic_tb IS
+ARCHITECTURE behavior OF ALU_2x16_logic_tb IS
 
-    COMPONENT ALU_8x16
+    COMPONENT ALU_2x16
         PORT (
-            a_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-            b_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+            a_in : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+            b_in : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
             c_in : IN STD_LOGIC;
             op_sel : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-            r_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+            r_out : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
             z_out : OUT STD_LOGIC;
             v_out : OUT STD_LOGIC
         );
     END COMPONENT;
 
-    SIGNAL a_in_tb : STD_LOGIC_VECTOR(7 DOWNTO 0);
-    SIGNAL b_in_tb : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL a_in_tb : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL b_in_tb : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
     SIGNAL c_in_tb : STD_LOGIC := '0';
-    SIGNAL op_sel_tb : STD_LOGIC_VECTOR(3 DOWNTO 0);
-    SIGNAL r_out_tb : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL op_sel_tb : STD_LOGIC_VECTOR(3 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL r_out_tb : STD_LOGIC_VECTOR(3 DOWNTO 0);
     SIGNAL z_out_tb : STD_LOGIC;
     SIGNAL v_out_tb : STD_LOGIC;
 
 BEGIN
 
-    UUT : ALU_8x16
+    UUT : ALU_2x16
     PORT MAP(
         a_in => a_in_tb,
         b_in => b_in_tb,
@@ -42,86 +43,85 @@ BEGIN
 
     stim_proc : PROCESS
     BEGIN
-        -- AND operation
+        -- AND operation (0100)
         op_sel_tb <= "0100";
-        a_in_tb <= "00000000";
-        b_in_tb <= "00000000";
+        a_in_tb <= "0000";
+        b_in_tb <= "0000";
         WAIT FOR 5 ns;
-        a_in_tb <= "11111111";
-        b_in_tb <= "00000000";
+        a_in_tb <= "1111";
+        b_in_tb <= "0000";
         WAIT FOR 5 ns;
-        a_in_tb <= "10101010";
-        b_in_tb <= "11001100";
+        a_in_tb <= "1010";
+        b_in_tb <= "0101";
         WAIT FOR 5 ns;
-        a_in_tb <= "11111111";
-        b_in_tb <= "11111111";
+        a_in_tb <= "1111";
+        b_in_tb <= "1111";
         WAIT FOR 5 ns;
-        a_in_tb <= "00001111";
-        b_in_tb <= "11110000";
+        a_in_tb <= "0011";
+        b_in_tb <= "1100";
         WAIT FOR 5 ns;
 
-        -- OR operation
+        -- OR operation (0101)
         op_sel_tb <= "0101";
-        a_in_tb <= "00000000";
-        b_in_tb <= "00000000";
+        a_in_tb <= "0000";
+        b_in_tb <= "0000";
         WAIT FOR 5 ns;
-        a_in_tb <= "11110000";
-        b_in_tb <= "00001111";
+        a_in_tb <= "1111";
+        b_in_tb <= "0001";
         WAIT FOR 5 ns;
-        a_in_tb <= "01010101";
-        b_in_tb <= "00110011";
+        a_in_tb <= "1010";
+        b_in_tb <= "0101";
         WAIT FOR 5 ns;
-        a_in_tb <= "10000000";
-        b_in_tb <= "00000001";
+        a_in_tb <= "1000";
+        b_in_tb <= "0001";
         WAIT FOR 5 ns;
-        a_in_tb <= "11111111";
-        b_in_tb <= "00000000";
+        a_in_tb <= "1111";
+        b_in_tb <= "0000";
         WAIT FOR 5 ns;
 
-        -- XOR operation
+        -- XOR operation (0110)
         op_sel_tb <= "0110";
-        a_in_tb <= "00000000";
-        b_in_tb <= "00000000";
+        a_in_tb <= "0000";
+        b_in_tb <= "0000";
         WAIT FOR 5 ns;
-        a_in_tb <= "11110000";
-        b_in_tb <= "00001111";
+        a_in_tb <= "1111";
+        b_in_tb <= "0001";
         WAIT FOR 5 ns;
-        a_in_tb <= "01010101";
-        b_in_tb <= "01010101";
+        a_in_tb <= "1010";
+        b_in_tb <= "1010";
         WAIT FOR 5 ns;
-        a_in_tb <= "11001100";
-        b_in_tb <= "10101010";
+        a_in_tb <= "0101";
+        b_in_tb <= "1111";
         WAIT FOR 5 ns;
-        a_in_tb <= "10000000";
-        b_in_tb <= "10000000";
+        a_in_tb <= "1001";
+        b_in_tb <= "1001";
         WAIT FOR 5 ns;
 
-        -- NOT operation (b_in ignored)
+        -- NOT operation (1111) — b_in ignored
         op_sel_tb <= "1111";
-        a_in_tb <= "00000000";
-        b_in_tb <= "XXXXXXXX"; -- ignored
+        a_in_tb <= "0000";
         WAIT FOR 5 ns;
-        a_in_tb <= "11111111";
+        a_in_tb <= "1111";
         WAIT FOR 5 ns;
-        a_in_tb <= "10101010";
+        a_in_tb <= "1010";
         WAIT FOR 5 ns;
-        a_in_tb <= "01010101";
+        a_in_tb <= "0101";
         WAIT FOR 5 ns;
-        a_in_tb <= "00001111";
+        a_in_tb <= "0001";
         WAIT FOR 5 ns;
 
-        -- PASS_B 
+        -- PASS_B operation (0111) — a_in ignored
         op_sel_tb <= "0111";
-        a_in_tb <= "XXXXXXXX"; -- ignored
-        b_in_tb <= "00000000";
+        a_in_tb <= "XXXX";
+        b_in_tb <= "0000";
         WAIT FOR 5 ns;
-        b_in_tb <= "11111111";
+        b_in_tb <= "1111";
         WAIT FOR 5 ns;
-        b_in_tb <= "10101010";
+        b_in_tb <= "1010";
         WAIT FOR 5 ns;
-        b_in_tb <= "01010101";
+        b_in_tb <= "0101";
         WAIT FOR 5 ns;
-        b_in_tb <= "00001111";
+        b_in_tb <= "0011";
         WAIT FOR 5 ns;
 
         WAIT;
